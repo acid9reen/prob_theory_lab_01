@@ -59,7 +59,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.h = self.q - self.r
         self.l = 1 / self.r
 
-        res = res = calc(self.l, self.h, self.num_of_observ, self.n)
+        res = calc(self.l, self.h, self.num_of_observ, self.n)
         self.print_to_table(res)
 
 
