@@ -33,7 +33,6 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         script_dir = os.path.dirname(os.path.realpath(__file__))
 
-        #  uic.loadUi(script_dir + os.path.sep + "main_window.ui", self)
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
 
