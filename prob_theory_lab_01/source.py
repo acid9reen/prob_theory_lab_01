@@ -3,7 +3,7 @@ import sys
 
 import numpy as np
 from numba import njit, vectorize, float64, int32
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
 
