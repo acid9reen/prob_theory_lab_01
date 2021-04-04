@@ -5,6 +5,8 @@ import numpy as np
 from numba import njit, vectorize, float64, int32
 from PyQt5 import QtWidgets, uic
 
+from main_window import Ui_main_window
+
 
 @vectorize([float64(float64, float64, float64)])
 def v_prob_dist(u: float, l, h):
@@ -31,30 +33,32 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         script_dir = os.path.dirname(os.path.realpath(__file__))
 
-        uic.loadUi(script_dir + os.path.sep + "main_window.ui", self)
-        self.calc_btn.clicked.connect(self.calc_btn_on_click)
+        self.ui = Ui_main_window()
+        self.ui.setupUi(self)
+
+        self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
 
     def print_to_table(self, arr):
         row = 0
-        while self.table.rowCount() > 0:
-            self.table.removeRow(0)
+        while self.ui.table.rowCount() > 0:
+            self.ui.table.removeRow(0)
 
         for val in arr:
-            self.table.insertRow(row)
-            self.table.setItem(row, 0, QtWidgets.QTableWidgetItem(
+            self.ui.table.insertRow(row)
+            self.ui.table.setItem(row, 0, QtWidgets.QTableWidgetItem(
                 f"{val:.4f}"))
             row += 1
 
     def calc_btn_on_click(self) -> None:
-        self.q = float(self.q_in.text())
-        self.r = float(self.r_in.text())
-        self.n = int(self.n_in.text())
-        self.num_of_observ = int(self.num_of_observ_in.text())
+        self.q = float(self.ui.q_in.text())
+        self.r = float(self.ui.r_in.text())
+        self.n = int(self.ui.n_in.text())
+        self.num_of_observ = int(self.ui.num_of_observ_in.text())
 
         self.h = self.q - self.r
         self.l = 1 / self.r
 
-        res = res = calc(self.l, self.h, self.num_of_observ, self.n)
+        res = calc(self.l, self.h, self.num_of_observ, self.n)
         self.print_to_table(res)
 
 
