@@ -1,3 +1,3 @@
-from source import main
+from .source import main
 
 main()
