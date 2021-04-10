@@ -2,24 +2,24 @@ import os
 import sys
 
 import numpy as np
-from numba import njit, vectorize, float64, int32
+from numba import njit, vectorize, float64, int32  # type: ignore
 from PyQt5 import QtWidgets
 
 from .main_window import Ui_main_window
 
 
 @vectorize([float64(float64, float64, float64)])
-def v_prob_dist(u: float, l, h):
+def v_prob_dist(u: float, l: float, h: float) -> float:
     return -(1 / l) * np.log(u) + h
 
 
 @njit([float64(float64, float64, int32)])
-def s(l, h, n):
+def s(l: float, h: float, n: int) -> float:
     return np.sum(v_prob_dist(np.random.uniform(0, 1, n), l, h))
 
 
 @njit([float64[:](float64, float64, int32, int32)])
-def calc(l, h, num_of_observ, n):
+def calc(l: float, h: float, num_of_observ: int, n: int) -> np.ndarray:
     res = np.zeros(num_of_observ, dtype=np.float64)
 
     for i in range(num_of_observ):
@@ -38,7 +38,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
 
-    def print_to_table(self, arr):
+    def print_to_table(self, arr: np.ndarray) -> None:
         row = 0
         while self.ui.table.rowCount() > 0:
             self.ui.table.removeRow(0)
