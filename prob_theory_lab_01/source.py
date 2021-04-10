@@ -5,7 +5,7 @@ import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
 from PyQt5 import QtWidgets
 
-from .main_window import Ui_main_window
+from main_window import Ui_main_window
 
 
 @vectorize([float64(float64, float64, float64)])
