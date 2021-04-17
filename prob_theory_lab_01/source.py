@@ -1,5 +1,7 @@
 import os
 import sys
+from dataclasses import dataclass, astuple
+from typing import Any
 
 import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
@@ -25,7 +27,17 @@ def calc(l: float, h: float, num_of_observ: int, n: int) -> np.ndarray:
     for i in range(num_of_observ):
         res[i] = s(l, h, n)
 
-    return np.sort(res)[::-1]
+    return np.sort(res)
+
+
+@dataclass
+class NumChars:
+    th_mean: float
+    mean: Any
+    th_var: float
+    var: Any
+    median: float
+    sample_range: float
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -45,9 +57,50 @@ class MainWindow(QtWidgets.QMainWindow):
 
         for val in arr:
             self.ui.table.insertRow(row)
-            self.ui.table.setItem(row, 0, QtWidgets.QTableWidgetItem(
-                f"{val:.4f}"))
+            self.ui.table.setItem(row, 0, QtWidgets.QTableWidgetItem(f"{val:.4f}"))
             row += 1
+
+    def calc_num_chars(self, data_sample: np.ndarray) -> NumChars:
+        return NumChars(
+            th_mean=self.q * self.n,
+            mean=np.mean(data_sample),
+            th_var=self.r,
+            var=np.var(data_sample),
+            median=np.median(data_sample),
+            sample_range=data_sample[-1] - data_sample[0],
+        )
+
+    def print_to_table_num_chars(self, num_chars: NumChars) -> None:
+        self.ui.num_chars_table.setItem(
+            0, 0, QtWidgets.QTableWidgetItem(f"{num_chars.th_mean:.4f}")
+        )
+        self.ui.num_chars_table.setItem(
+            0, 1, QtWidgets.QTableWidgetItem(f"{num_chars.mean:.4f}")
+        )
+        self.ui.num_chars_table.setItem(
+            0,
+            2,
+            QtWidgets.QTableWidgetItem(
+                f"{abs(num_chars.th_mean - num_chars.mean):.4f}"
+            ),
+        )
+        self.ui.num_chars_table.setItem(
+            0, 3, QtWidgets.QTableWidgetItem(f"{num_chars.th_var:.4f}")
+        )
+        self.ui.num_chars_table.setItem(
+            0, 4, QtWidgets.QTableWidgetItem(f"{num_chars.var:.4f}")
+        )
+        self.ui.num_chars_table.setItem(
+            0,
+            5,
+            QtWidgets.QTableWidgetItem(f"{abs(num_chars.th_var - num_chars.var):.4f}"),
+        )
+        self.ui.num_chars_table.setItem(
+            0, 6, QtWidgets.QTableWidgetItem(f"{num_chars.median:.4f}")
+        )
+        self.ui.num_chars_table.setItem(
+            0, 7, QtWidgets.QTableWidgetItem(f"{num_chars.sample_range:.4f}")
+        )
 
     def calc_btn_on_click(self) -> None:
         self.q = float(self.ui.q_in.text())
@@ -60,6 +113,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         res = calc(self.l, self.h, self.num_of_observ, self.n)
         self.print_to_table(res)
+        self.print_to_table_num_chars(self.calc_num_chars(res))
 
 
 def main() -> None:
