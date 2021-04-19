@@ -51,9 +51,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.m_rows = int(self.ui.m_rows_in.text())
         self.sample_data: np.ndarray = np.ndarray([])
-        self.l = None
-        self.h = None
-        self.n = None
+        self.q = float(self.ui.q_in.text())
+        self.r = float(self.ui.r_in.text())
+        self.n = int(self.ui.n_in.text())
+        self.num_of_observ = int(self.ui.num_of_observ_in.text())
+
+        self.h = self.q - self.r
+        self.l = 1 / self.r
 
         self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
 
@@ -79,11 +83,11 @@ class MainWindow(QtWidgets.QMainWindow):
         return bin_edges
 
     def func(self, y: float) -> float:
-        return np.log(1 - y) / -self.l + self.h
+        return (np.log(1 - y) / -self.l + self.h) * self.n
 
     def exp_dist(self, ys_size: int):
         ys = np.linspace(0, 1, ys_size, endpoint=False)
-        xs = [self.func(x) for x in ys]
+        xs = [self.func(y) for y in ys]
 
         return xs, ys
 
@@ -112,7 +116,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return NumChars(
             th_mean=self.q * self.n,
             mean=np.mean(data_sample),
-            th_var=self.r,
+            th_var=self.r * self.r * self.n * self.n,
             var=np.var(data_sample),
             median=np.median(data_sample),
             sample_range=data_sample[-1] - data_sample[0],
