@@ -4,6 +4,7 @@ from dataclasses import dataclass, astuple
 from typing import Any
 
 import numpy as np
+import matplotlib.pyplot as plt
 from numba import njit, vectorize, float64, int32  # type: ignore
 from PyQt5 import QtWidgets
 
@@ -47,8 +48,34 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
+        self.m_rows = int(self.ui.m_rows_in.text())
+        self.sample_data: np.ndarray = np.ndarray([])
 
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
+        self.ui.m_rows_in.editingFinished.connect(self.update_bin_edges_table)
+        self.ui.plot_btn.clicked.connect(self.plot_hist)
+
+    def update_bin_edges_table(self) -> None:
+        self.m_rows = int(self.ui.m_rows_in.text())
+
+        while self.ui.bin_edges_table.rowCount() > 0:
+            self.ui.bin_edges_table.removeRow(0)
+
+        for row_ind in range(0, self.m_rows):
+            self.ui.bin_edges_table.insertRow(row_ind)
+
+    def get_bin_edges(self) -> np.ndarray:
+        bin_edges = np.zeros(self.m_rows, dtype=np.float64)
+
+        for i in range(self.m_rows):
+            bin_edges[i] = float(self.ui.bin_edges_table.item(i, 0).text())
+
+        return bin_edges
+
+    def plot_hist(self) -> None:
+        plt.close()
+        plt.hist(self.sample_data, self.get_bin_edges())
+        plt.show()
 
     def print_to_table(self, arr: np.ndarray) -> None:
         row = 0
@@ -111,9 +138,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.h = self.q - self.r
         self.l = 1 / self.r
 
-        res = calc(self.l, self.h, self.num_of_observ, self.n)
-        self.print_to_table(res)
-        self.print_to_table_num_chars(self.calc_num_chars(res))
+        self.sample_data = calc(self.l, self.h, self.num_of_observ, self.n)
+        self.print_to_table(self.sample_data)
+        self.print_to_table_num_chars(self.calc_num_chars(self.sample_data))
 
 
 def main() -> None:
