@@ -6,6 +6,7 @@ from typing import Any
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import njit, vectorize, float64, int32  # type: ignore
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
@@ -51,6 +52,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.m_rows = int(self.ui.m_rows_in.text())
         self.sample_data: np.ndarray = np.ndarray([])
 
+        self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
+
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
         self.ui.m_rows_in.editingFinished.connect(self.update_bin_edges_table)
         self.ui.plot_btn.clicked.connect(self.plot_hist)
@@ -73,9 +76,10 @@ class MainWindow(QtWidgets.QMainWindow):
         return bin_edges
 
     def plot_hist(self) -> None:
-        plt.close()
-        plt.hist(self.sample_data, self.get_bin_edges())
-        plt.show()
+        self.ui.plot.canvas.axes[1].clear()
+        self.ui.plot.canvas.axes[1].hist(self.sample_data, self.get_bin_edges())
+
+        self.ui.plot.canvas.draw()
 
     def print_to_table(self, arr: np.ndarray) -> None:
         row = 0
