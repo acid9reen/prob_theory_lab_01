@@ -51,6 +51,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.m_rows = int(self.ui.m_rows_in.text())
         self.sample_data: np.ndarray = np.ndarray([])
+        self.l = None
+        self.h = None
+        self.n = None
 
         self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
 
@@ -75,9 +78,23 @@ class MainWindow(QtWidgets.QMainWindow):
 
         return bin_edges
 
+    def func(self, y: float) -> float:
+        return np.log(1 - y) / -self.l + self.h
+
+    def exp_dist(self, ys_size: int):
+        ys = np.linspace(0, 1, ys_size, endpoint=False)
+        xs = [self.func(x) for x in ys]
+
+        return xs, ys
+
     def plot_hist(self) -> None:
         self.ui.plot.canvas.axes[1].clear()
         self.ui.plot.canvas.axes[1].hist(self.sample_data, self.get_bin_edges())
+
+        self.ui.plot.canvas.axes[0].clear()
+        self.ui.plot.canvas.axes[0].hist(self.sample_data, 500, density=True, histtype='step',
+                                         cumulative=True, label='Empirical')
+        self.ui.plot.canvas.axes[0].plot(*self.exp_dist(500))
 
         self.ui.plot.canvas.draw()
 
