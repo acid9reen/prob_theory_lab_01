@@ -116,7 +116,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return NumChars(
             th_mean=self.q * self.n,
             mean=np.mean(data_sample),
-            th_var=self.r * self.r * self.n * self.n,
+            th_var=self.r * self.r * self.n,
             var=np.var(data_sample),
             median=np.median(data_sample),
             sample_range=data_sample[-1] - data_sample[0],
