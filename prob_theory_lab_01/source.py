@@ -82,12 +82,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
         return bin_edges
 
-    def func(self, y: float) -> float:
-        return (np.log(1 - y) / -self.l + self.h) * self.n
+    def func(self, x: float) -> float:
+        x = x - self.n * self.h
+        summ = -np.exp(-x * self.l) * np.power(self.l * x, self.n - 1)
+
+        fact = summ
+        for i in range(1, self.n):
+            fact *= self.n - i
+            summ -= fact * np.power(self.l * x, self.n - i)
+
+        return summ + np.math.factorial(self.n - 1)
 
     def exp_dist(self, ys_size: int):
-        ys = np.linspace(0, 1, ys_size, endpoint=False)
-        xs = [self.func(y) for y in ys]
+        xs = np.linspace(0, 0.1, ys_size, endpoint=False)
+        ys = [self.func(x) for x in xs]
 
         return xs, ys
 
