@@ -1,10 +1,10 @@
 import os
 import sys
-from dataclasses import dataclass, astuple
+from dataclasses import dataclass
 from typing import Any
 
+from scipy import stats
 import numpy as np
-import matplotlib.pyplot as plt
 from numba import njit, vectorize, float64, int32  # type: ignore
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtWidgets
@@ -19,7 +19,7 @@ def v_prob_dist(u: float, l: float, h: float) -> float:
 
 @njit([float64(float64, float64, int32)])
 def s(l: float, h: float, n: int) -> float:
-    return np.sum(v_prob_dist(np.random.uniform(0, 1, n), l, h))
+    return float(np.sum(v_prob_dist(np.random.uniform(0, 1, n), l, h)))
 
 
 @njit([float64[:](float64, float64, int32, int32)])
@@ -56,8 +56,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.n = int(self.ui.n_in.text())
         self.num_of_observ = int(self.ui.num_of_observ_in.text())
 
-        self.h = self.q - self.r
-        self.l = 1 / self.r
+        self.h = self.q - np.sqrt(self.r)
+        self.l = 1 / np.sqrt(self.r)
 
         self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
 
@@ -82,31 +82,31 @@ class MainWindow(QtWidgets.QMainWindow):
 
         return bin_edges
 
-    def func(self, x: float) -> float:
-        x = x - self.n * self.h
-        summ = -np.exp(-x * self.l) * np.power(self.l * x, self.n - 1)
-
-        fact = summ
-        for i in range(1, self.n):
-            fact *= self.n - i
-            summ -= fact * np.power(self.l * x, self.n - i)
-
-        return summ + np.math.factorial(self.n - 1)
-
-    def exp_dist(self, ys_size: int):
-        xs = np.linspace(0, 0.1, ys_size, endpoint=False)
-        ys = [self.func(x) for x in xs]
-
-        return xs, ys
-
     def plot_hist(self) -> None:
         self.ui.plot.canvas.axes[1].clear()
         self.ui.plot.canvas.axes[1].hist(self.sample_data, self.get_bin_edges())
 
         self.ui.plot.canvas.axes[0].clear()
-        self.ui.plot.canvas.axes[0].hist(self.sample_data, 500, density=True, histtype='step',
-                                         cumulative=True, label='Empirical')
-        self.ui.plot.canvas.axes[0].plot(*self.exp_dist(500))
+        self.ui.plot.canvas.axes[0].hist(
+            self.sample_data,
+            500,
+            density=True,
+            histtype="step",
+            cumulative=True,
+            label="Empirical",
+        )
+
+        # named params for gamma distribution
+        params = {
+            "a": self.n,
+            "loc": self.h * self.n,
+            "scale": 1 / self.l,
+        }
+
+        x = np.linspace(
+            stats.gamma.ppf(0.01, **params), stats.gamma.ppf(0.99, **params), 100
+        )
+        self.ui.plot.canvas.axes[0].plot(x, stats.gamma.cdf(x, **params))
 
         self.ui.plot.canvas.draw()
 
@@ -126,7 +126,7 @@ class MainWindow(QtWidgets.QMainWindow):
             mean=np.mean(data_sample),
             th_var=self.r * self.r * self.n,
             var=np.var(data_sample),
-            median=np.median(data_sample),
+            median=float(np.median(data_sample)),
             sample_range=data_sample[-1] - data_sample[0],
         )
 
