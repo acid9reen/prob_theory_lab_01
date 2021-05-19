@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1049</width>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,32 +15,14 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="1" rowspan="2">
-     <widget class="QTableWidget" name="table">
-      <property name="minimumSize">
-       <size>
-        <width>160</width>
-        <height>0</height>
-       </size>
-      </property>
+    <item row="0" column="0" colspan="2">
+     <widget class="QGroupBox" name="groupBox">
       <property name="maximumSize">
        <size>
-        <width>160</width>
-        <height>16777215</height>
+        <width>16777215</width>
+        <height>110</height>
        </size>
       </property>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>120</number>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>Время работы</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QGroupBox" name="groupBox">
       <property name="title">
        <string>Условие задачи</string>
       </property>
@@ -48,7 +30,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Устройство состоит из &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;N&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; &amp;gt;&amp;gt; 1 дублирующих приборов. Каждый следующий прибор включается после выхода из строя предыдущегою Время безотказной работы каждого прибора - положительная с.в. со средним &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Q &lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;и дисперсией &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;R. &lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Плотность распределения выбрать по аналогии с приведенными на рисунках на с. 15. С.в. &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;η - &lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;время безотказной работы всего устройтва.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Устройство состоит из &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; &amp;gt;&amp;gt; 1 дублирующих приборов. Каждый следующий прибор включается после выхода из строя предыдущего. Время безотказной работы каждого прибора - положительная с.в. со средним &lt;span style=&quot; font-style:italic;&quot;&gt;Q &lt;/span&gt;и дисперсией &lt;span style=&quot; font-style:italic;&quot;&gt;R. &lt;/span&gt;Плотность распределения выбрать по аналогии с приведенными на рисунках на с. 15. С.в. &lt;span style=&quot; font-style:italic;&quot;&gt;η - &lt;/span&gt;время безотказной работы всего устройтва.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -61,13 +43,19 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="1" column="0" rowspan="3">
      <widget class="QGroupBox" name="groupBox_2">
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <property name="title">
        <string>Параметры задачи</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="3" column="1">
+       <item row="6" column="1">
         <widget class="QLineEdit" name="num_of_observ_in">
          <property name="maximumSize">
           <size>
@@ -80,7 +68,20 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="7" column="1">
+        <widget class="QPushButton" name="calc_btn">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
         <widget class="QLineEdit" name="q_in">
          <property name="maximumSize">
           <size>
@@ -93,33 +94,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="maximumSize">
-          <size>
-           <width>120</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Q</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="maximumSize">
-          <size>
-           <width>120</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>N</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
+       <item row="5" column="1">
         <widget class="QLineEdit" name="n_in">
          <property name="maximumSize">
           <size>
@@ -132,20 +107,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="r_in">
-         <property name="maximumSize">
-          <size>
-           <width>120</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>0.5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="label_3">
          <property name="maximumSize">
           <size>
@@ -159,6 +121,19 @@
         </widget>
        </item>
        <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Q</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
         <widget class="QLabel" name="label_4">
          <property name="maximumSize">
           <size>
@@ -171,21 +146,8 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="4" column="1">
-        <widget class="QPushButton" name="calc_btn">
+        <widget class="QLineEdit" name="r_in">
          <property name="maximumSize">
           <size>
            <width>120</width>
@@ -193,7 +155,304 @@
           </size>
          </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>0.5</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>N</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QPushButton" name="plot_btn">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Графики</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QTableWidget" name="bin_edges_table">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Интервал</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>3</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>4</string>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>5</string>
+          </property>
+         </item>
+         <item row="3" column="0">
+          <property name="text">
+           <string>7</string>
+          </property>
+         </item>
+         <item row="4" column="0">
+          <property name="text">
+           <string>9</string>
+          </property>
+         </item>
+         <item row="5" column="0">
+          <property name="text">
+           <string>12</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="m_rows_in">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>6</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="MplWidget" name="plot" native="true"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Числовые характеристики</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QTableWidget" name="num_chars_table">
+         <property name="minimumSize">
+          <size>
+           <width>685</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>685</width>
+           <height>56</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>85</number>
+         </attribute>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Eη</string>
+          </property>
+          <property name="font">
+           <font>
+            <italic>false</italic>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>🆇</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>|Eη - 🆇|</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Dη</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>S^2</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>|Dη - S^2|</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>🅼e</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>🆁</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QTableWidget" name="untitled_table">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" rowspan="3">
+     <widget class="QTableWidget" name="table">
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>187</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>120</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Время работы</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QFrame" name="frame">
+      <property name="maximumSize">
+       <size>
+        <width>187</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;max|stat_pdf - th_pdf| ↓&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="max_sub_th_stat_pdf">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -203,6 +462,14 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MplWidget</class>
+   <extends>QWidget</extends>
+   <header>mpl_widget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
