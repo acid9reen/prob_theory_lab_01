@@ -68,11 +68,18 @@ class MainWindow(QtWidgets.QMainWindow):
     def update_bin_edges_table(self) -> None:
         self.m_rows = int(self.ui.m_rows_in.text())
 
+        first = self.sample_data[0]
+        last = self.sample_data[-1]
+        step = (last - first) / self.m_rows
+
         while self.ui.bin_edges_table.rowCount() > 0:
             self.ui.bin_edges_table.removeRow(0)
 
+        elem = first
         for row_ind in range(0, self.m_rows):
             self.ui.bin_edges_table.insertRow(row_ind)
+            self.ui.bin_edges_table.setItem(row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}"))
+            elem += step
 
     def get_bin_edges(self) -> np.ndarray:
         bin_edges = np.zeros(self.m_rows, dtype=np.float64)
@@ -84,7 +91,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def plot_hist(self) -> None:
         self.ui.plot.canvas.axes[1].clear()
-        self.ui.plot.canvas.axes[1].hist(self.sample_data, self.get_bin_edges())
+        bin_edges = self.get_bin_edges()
+
+        self.ui.plot.canvas.axes[1].hist(self.sample_data, bin_edges)
 
         self.ui.plot.canvas.axes[0].clear()
         self.ui.plot.canvas.axes[0].hist(
@@ -96,7 +105,6 @@ class MainWindow(QtWidgets.QMainWindow):
             label="Empirical",
         )
 
-        # named params for gamma distribution
         params = {
             "a": self.n,
             "loc": self.h * self.n,
@@ -109,6 +117,38 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.plot.canvas.axes[0].plot(x, stats.gamma.cdf(x, **params))
 
         self.ui.plot.canvas.draw()
+
+        self.fill_untitled_table(bin_edges, params)
+
+    def fill_untitled_table(self, bin_edges: np.ndarray, params:dict) -> None:
+        while self.ui.untitled_table.rowCount() > 0:
+            self.ui.untitled_table.removeRow(0)
+
+        while self.ui.untitled_table.columnCount() > 0:
+            self.ui.untitled_table.removeColumn(0)
+
+        self.ui.untitled_table.insertRow(0)
+        self.ui.untitled_table.insertRow(1)
+
+        hist, bins = np.histogram(self.sample_data, bins=bin_edges)
+        hist = hist / self.num_of_observ
+
+        max_sub = 0
+        for index, val in enumerate(hist):
+            self.ui.untitled_table.insertColumn(index)
+            stat_pdf = val / (bins[index + 1] - bins[index])
+            self.ui.untitled_table.setItem(0, index, QtWidgets.QTableWidgetItem(f"{stat_pdf:.4f}"))
+
+            x = bins[index] + (bins[index + 1] - bins[index]) / 2
+            th_pdf = stats.gamma.pdf(x, **params)
+            self.ui.untitled_table.setItem(1, index, QtWidgets.QTableWidgetItem(f"{th_pdf:.4f}"))
+
+            sub = abs(stat_pdf - th_pdf)
+
+            if sub > max_sub:
+                max_sub = sub
+
+            self.ui.max_sub_th_stat_pdf.setText(f"{max_sub:.4f}")
 
     def print_to_table(self, arr: np.ndarray) -> None:
         row = 0
