@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_main_window(object):
     def setupUi(self, main_window):
         main_window.setObjectName("main_window")
-        main_window.resize(1049, 659)
+        main_window.resize(1076, 659)
         self.centralwidget = QtWidgets.QWidget(main_window)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -188,6 +188,9 @@ class Ui_main_window(object):
         self.max_sub_th_stat_pdf.setAlignment(QtCore.Qt.AlignCenter)
         self.max_sub_th_stat_pdf.setObjectName("max_sub_th_stat_pdf")
         self.verticalLayout.addWidget(self.max_sub_th_stat_pdf)
+        self.check_hypothesis_btn = QtWidgets.QPushButton(self.frame)
+        self.check_hypothesis_btn.setObjectName("check_hypothesis_btn")
+        self.verticalLayout.addWidget(self.check_hypothesis_btn)
         self.gridLayout.addWidget(self.frame, 3, 2, 1, 1)
         main_window.setCentralWidget(self.centralwidget)
 
@@ -248,4 +251,5 @@ class Ui_main_window(object):
         item = self.table.horizontalHeaderItem(0)
         item.setText(_translate("main_window", "Время работы"))
         self.label_6.setText(_translate("main_window", "<html><head/><body><p>max|stat_pdf - th_pdf| ↓</p></body></html>"))
+        self.check_hypothesis_btn.setText(_translate("main_window", "Гипотеза"))
 from mpl_widget import MplWidget

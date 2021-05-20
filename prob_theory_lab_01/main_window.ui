@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1049</width>
+    <width>1076</width>
     <height>659</height>
    </rect>
   </property>
@@ -453,6 +453,13 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="check_hypothesis_btn">
+         <property name="text">
+          <string>Гипотеза</string>
          </property>
         </widget>
        </item>

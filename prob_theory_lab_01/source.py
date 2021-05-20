@@ -10,6 +10,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
+from hipothesis_dialogue import Ui_Dialog
 
 
 @vectorize([float64(float64, float64, float64)])
@@ -42,6 +43,37 @@ class NumChars:
     sample_range: float
 
 
+class Dialogue(QtWidgets.QDialog):
+    def __init__(self, sample_data: np.ndarray) -> None:
+        super(Dialogue, self).__init__()
+        self.ui = Ui_Dialog()
+        self.ui.setupUi(self)
+
+        self.alpha = float(self.ui.alpha_in.text())
+        self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
+        self.sample_data = sample_data
+
+        self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
+        self.ui.num_of_points_of_interval_in.editingFinished.connect(self.fill_intervals)
+
+    def check_hypothesis(self):
+        print("Btn clicked!")
+
+    def fill_intervals(self) -> None:
+        first = self.sample_data[0]
+        last = self.sample_data[-1]
+        step = (last - first) / self.num_of_points_of_interval
+
+        while self.ui.intervals_table.rowCount() > 0:
+            self.ui.intervals_table.removeRow(0)
+
+        elem = first
+        for row_ind in range(0, self.num_of_points_of_interval):
+            self.ui.intervals_table.insertRow(row_ind)
+            self.ui.intervals_table.setItem(row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}"))
+            elem += step
+
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self) -> None:
         super(MainWindow, self).__init__()
@@ -64,6 +96,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
         self.ui.m_rows_in.editingFinished.connect(self.update_bin_edges_table)
         self.ui.plot_btn.clicked.connect(self.plot_hist)
+        self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
+
+    def check_hypothesis(self):
+        dlg = Dialogue(sample_data=self.sample_data)
+        dlg.exec()
 
     def update_bin_edges_table(self) -> None:
         self.m_rows = int(self.ui.m_rows_in.text())
