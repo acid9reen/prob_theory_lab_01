@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\hipothesis_dialogue.ui'
+# Form implementation generated from reading ui file '.\hypothesis_dialogue.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -99,15 +99,17 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 1, 2, 1, 1)
-        self.tableWidget_2 = QtWidgets.QTableWidget(self.groupBox_2)
+        self.q_out_table = QtWidgets.QTableWidget(self.groupBox_2)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
-        self.tableWidget_2.setFont(font)
-        self.tableWidget_2.setObjectName("tableWidget_2")
-        self.tableWidget_2.setColumnCount(0)
-        self.tableWidget_2.setRowCount(0)
-        self.gridLayout.addWidget(self.tableWidget_2, 0, 0, 1, 3)
+        self.q_out_table.setFont(font)
+        self.q_out_table.setObjectName("q_out_table")
+        self.q_out_table.setColumnCount(0)
+        self.q_out_table.setRowCount(1)
+        item = QtWidgets.QTableWidgetItem()
+        self.q_out_table.setVerticalHeaderItem(0, item)
+        self.gridLayout.addWidget(self.q_out_table, 0, 0, 1, 3)
         self.hipothesis_verdict_lbl = QtWidgets.QLabel(self.groupBox_2)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -132,3 +134,5 @@ class Ui_Dialog(object):
         self.check_hypothesis_btn.setText(_translate("Dialog", "Проверить гипотезу"))
         self.groupBox_2.setTitle(_translate("Dialog", "Результаты"))
         self.label_3.setText(_translate("Dialog", "<html><head/><body><p>Ḟ(R<span style=\" vertical-align:sub;\">0</span>) =</p></body></html>"))
+        item = self.q_out_table.verticalHeaderItem(0)
+        item.setText(_translate("Dialog", "q_i"))

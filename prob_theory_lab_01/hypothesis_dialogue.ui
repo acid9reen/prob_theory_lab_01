@@ -176,13 +176,18 @@
        </spacer>
       </item>
       <item row="0" column="0" colspan="3">
-       <widget class="QTableWidget" name="tableWidget_2">
+       <widget class="QTableWidget" name="q_out_table">
         <property name="font">
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
          </font>
         </property>
+        <row>
+         <property name="text">
+          <string>q_i</string>
+         </property>
+        </row>
        </widget>
       </item>
       <item row="2" column="0" colspan="3">
