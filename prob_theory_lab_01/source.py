@@ -91,9 +91,7 @@ class Dialogue(QtWidgets.QDialog):
         self.intervals = self.get_intervals()
 
     def get_intervals(self) -> np.ndarray:
-        intervals = np.zeros(self.num_of_points_of_interval + 2, dtype=np.float64)
-        intervals[0] = -np.inf
-        intervals[-1] = np.inf
+        intervals = np.zeros(self.num_of_points_of_interval, dtype=np.float64)
 
         for i in range(self.num_of_points_of_interval):
             intervals[i] = float(self.ui.intervals_table.item(i, 0).text())
