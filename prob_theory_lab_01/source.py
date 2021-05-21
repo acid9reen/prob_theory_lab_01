@@ -54,20 +54,46 @@ class Dialogue(QtWidgets.QDialog):
         self.sample_data = sample_data
         self.args = (params["a"], params["loc"], params["scale"])
         self.intervals: np.ndarray
+        self.q_is: np.ndarray
 
         self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
         self.ui.num_of_points_of_interval_in.editingFinished.connect(self.fill_intervals)
 
     def check_hypothesis(self):
+        self.alpha = float(self.ui.alpha_in.text())
+        self.intervals = self.get_intervals()
         self.calculate_q_i_and_fill_table()
-        print("Btn clicked!")
+
+        # r_0 = self.calculate_r_0()
+        __, f_r_0 = stats.chisquare(self.q_is)
+
+        self.ui.f_r_0_lbl.setText(f"{f_r_0:.4f}")
+
+        if f_r_0 < self.alpha:
+            self.ui.hipothesis_verdict_lbl.setText("Принята ✔")
+        else:
+            self.ui.hipothesis_verdict_lbl.setText("Отвергнута ❌")
+
+    def calculate_r_0(self) -> float:
+        n_is, __ = np.histogram(self.sample_data, self.intervals)
+        n = len(self.intervals)
+
+        r_0 = 0
+        for n_i, q_i in zip(n_is, self.q_is):
+            r_0 += ((n_i - n_i * q_i) * (n_i - n_i * q_i)) / (n * q_i)
+
+        return r_0
 
     def calculate_q_i_and_fill_table(self) -> None:
+        self.q_is = np.zeros(len(self.intervals) - 1)
+
         while self.ui.q_out_table.columnCount() > 0:
             self.ui.q_out_table.removeColumn(0)
 
         for i in range(1, len(self.intervals)):
             q_i, __ = integrate.quad(stats.gamma.pdf, self.intervals[i - 1], self.intervals[i], args=self.args)
+
+            self.q_is[i - 1] = q_i
 
             self.ui.q_out_table.insertColumn(i - 1)
             self.ui.q_out_table.setItem(0, i - 1, QtWidgets.QTableWidgetItem(f"{q_i:.4f}"))
