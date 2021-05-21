@@ -23,12 +23,24 @@
         <height>110</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="title">
        <string>Условие задачи</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Устройство состоит из &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; &amp;gt;&amp;gt; 1 дублирующих приборов. Каждый следующий прибор включается после выхода из строя предыдущего. Время безотказной работы каждого прибора - положительная с.в. со средним &lt;span style=&quot; font-style:italic;&quot;&gt;Q &lt;/span&gt;и дисперсией &lt;span style=&quot; font-style:italic;&quot;&gt;R. &lt;/span&gt;Плотность распределения выбрать по аналогии с приведенными на рисунках на с. 15. С.в. &lt;span style=&quot; font-style:italic;&quot;&gt;η - &lt;/span&gt;время безотказной работы всего устройтва.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -51,6 +63,12 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="title">
        <string>Параметры задачи</string>
       </property>
@@ -62,6 +80,12 @@
            <width>120</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>100</string>
@@ -76,6 +100,12 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>PushButton</string>
          </property>
@@ -88,6 +118,12 @@
            <width>120</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>1</string>
@@ -102,6 +138,12 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>5</string>
          </property>
@@ -114,6 +156,12 @@
            <width>120</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>R</string>
@@ -128,6 +176,12 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Q</string>
          </property>
@@ -140,6 +194,12 @@
            <width>120</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>n</string>
@@ -154,6 +214,12 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>0.5</string>
          </property>
@@ -167,6 +233,12 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>N</string>
          </property>
@@ -179,6 +251,12 @@
            <width>120</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>Графики</string>
@@ -198,6 +276,12 @@
            <width>120</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <row>
           <property name="text">
@@ -274,6 +358,12 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>6</string>
          </property>
@@ -283,7 +373,14 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="MplWidget" name="plot" native="true"/>
+     <widget class="MplWidget" name="plot" native="true">
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </widget>
     </item>
     <item row="2" column="1">
      <widget class="QGroupBox" name="groupBox_3">
@@ -292,6 +389,12 @@
         <width>16777215</width>
         <height>100</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="title">
        <string>Числовые характеристики</string>
@@ -310,8 +413,8 @@
         <widget class="QTableWidget" name="num_chars_table">
          <property name="minimumSize">
           <size>
-           <width>685</width>
-           <height>0</height>
+           <width>690</width>
+           <height>56</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -319,6 +422,12 @@
            <width>685</width>
            <height>56</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
@@ -386,14 +495,20 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>100</height>
+        <height>105</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>100</height>
+        <height>105</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
      </widget>
     </item>
@@ -410,6 +525,12 @@
         <width>187</width>
         <height>16777215</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>120</number>
@@ -429,6 +550,12 @@
         <height>100</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -438,6 +565,12 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label_6">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;max|stat_pdf - th_pdf| ↓&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -448,6 +581,12 @@
        </item>
        <item>
         <widget class="QLabel" name="max_sub_th_stat_pdf">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -458,6 +597,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="check_hypothesis_btn">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Гипотеза</string>
          </property>
