@@ -10,7 +10,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
-from hipothesis_dialogue import Ui_Dialog
+from hypothesis_dialogue import Ui_Dialog
 
 
 @vectorize([float64(float64, float64, float64)])
