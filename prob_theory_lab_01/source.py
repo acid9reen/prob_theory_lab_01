@@ -3,7 +3,7 @@ import sys
 from dataclasses import dataclass
 from typing import Any
 
-from scipy import stats
+from scipy import stats, integrate
 import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -52,13 +52,25 @@ class Dialogue(QtWidgets.QDialog):
         self.alpha = float(self.ui.alpha_in.text())
         self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
         self.sample_data = sample_data
+        self.args = (params["a"], params["loc"], params["scale"])
         self.intervals: np.ndarray
 
         self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
         self.ui.num_of_points_of_interval_in.editingFinished.connect(self.fill_intervals)
 
     def check_hypothesis(self):
+        self.calculate_q_i_and_fill_table()
         print("Btn clicked!")
+
+    def calculate_q_i_and_fill_table(self) -> None:
+        while self.ui.q_out_table.columnCount() > 0:
+            self.ui.q_out_table.removeColumn(0)
+
+        for i in range(1, len(self.intervals)):
+            q_i, __ = integrate.quad(stats.gamma.pdf, self.intervals[i - 1], self.intervals[i], args=self.args)
+
+            self.ui.q_out_table.insertColumn(i - 1)
+            self.ui.q_out_table.setItem(0, i - 1, QtWidgets.QTableWidgetItem(f"{q_i:.4f}"))
 
     def fill_intervals(self) -> None:
         self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
