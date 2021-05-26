@@ -233,6 +233,17 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.fill_untitled_table(bin_edges, params)
 
+        d = 0
+        for i in range(len(self.sample_data)):
+            d_curr = max(
+                (i + 1) / self.num_of_observ - stats.gamma.cdf(self.sample_data[i], **params),
+                stats.gamma.cdf(self.sample_data[i], **params) - i / self.num_of_observ)
+
+            if d_curr > d:
+                d = d_curr
+
+        self.ui.d_out_lbl.setText(f"{d:.4f}")
+
     def fill_untitled_table(self, bin_edges: np.ndarray, params: dict) -> None:
         while self.ui.untitled_table.rowCount() > 0:
             self.ui.untitled_table.removeRow(0)
