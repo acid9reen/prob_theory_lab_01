@@ -50,7 +50,7 @@ class Dialogue(QtWidgets.QDialog):
         self.alpha = float(self.ui.alpha_in.text())
         self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
         self.sample_data = sample_data
-        self.args = (params["a"], params["loc"], params["scale"])
+        self.params = params
         self.initial_conditions = initial_conditions
         self.intervals: np.ndarray
         self.q_is: np.ndarray
@@ -98,7 +98,7 @@ class Dialogue(QtWidgets.QDialog):
             self.ui.q_out_table.removeColumn(0)
 
         for i in range(1, len(self.intervals)):
-            q_i, __ = integrate.quad(stats.gamma.pdf, self.intervals[i - 1], self.intervals[i], args=self.args)
+            q_i = stats.gamma.cdf(self.intervals[i], **self.params) - stats.gamma.cdf(self.intervals[i - 1], **self.params)
 
             self.q_is[i - 1] = q_i
 
