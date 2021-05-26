@@ -130,7 +130,7 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Кол-во точек интервала ↓"))
         self.num_of_points_of_interval_in.setText(_translate("Dialog", "5"))
         self.label_2.setText(_translate("Dialog", "Параметр α ↓"))
-        self.alpha_in.setText(_translate("Dialog", "0.05"))
+        self.alpha_in.setText(_translate("Dialog", "0.5"))
         self.check_hypothesis_btn.setText(_translate("Dialog", "Проверить гипотезу"))
         self.groupBox_2.setTitle(_translate("Dialog", "Результаты"))
         self.label_3.setText(_translate("Dialog", "<html><head/><body><p>Ḟ(R<span style=\" vertical-align:sub;\">0</span>) =</p></body></html>"))

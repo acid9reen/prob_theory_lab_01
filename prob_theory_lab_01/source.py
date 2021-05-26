@@ -74,18 +74,18 @@ class Dialogue(QtWidgets.QDialog):
 
         r_0 = self.calculate_r_0()
         print(r_0)
-        f_r_0 = self.calculate_f_0(r_0, len(self.intervals) - 1)
+        f_r_0 = self.calculate_f_0(r_0, len(self.intervals) - 2)
 
         self.ui.f_r_0_lbl.setText(f"{f_r_0:.4f}")
 
-        if f_r_0 < self.alpha:
+        if f_r_0 >= self.alpha:
             self.ui.hipothesis_verdict_lbl.setText("Принята ✔")
         else:
             self.ui.hipothesis_verdict_lbl.setText("Отвергнута ❌")
 
     def calculate_r_0(self) -> float:
         n_is, __ = np.histogram(self.sample_data, self.intervals)
-        n = self.initial_conditions["n"]
+        n = self.initial_conditions["num_of_observ"]
 
         r_0 = 0
         for n_i, q_i in zip(n_is, self.q_is):
