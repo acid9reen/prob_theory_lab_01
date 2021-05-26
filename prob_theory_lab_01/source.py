@@ -205,7 +205,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.plot.canvas.axes[1].clear()
         bin_edges = self.get_bin_edges()
 
-        self.ui.plot.canvas.axes[1].hist(self.sample_data, bin_edges)
+        self.ui.plot.canvas.axes[1].hist(self.sample_data, bin_edges, density=True)
 
         self.ui.plot.canvas.axes[0].clear()
         self.ui.plot.canvas.axes[0].hist(
