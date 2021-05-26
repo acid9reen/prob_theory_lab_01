@@ -136,7 +136,6 @@ class Dialogue(QtWidgets.QDialog):
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self) -> None:
         super(MainWindow, self).__init__()
-        script_dir = os.path.dirname(os.path.realpath(__file__))
 
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
@@ -157,8 +156,6 @@ class MainWindow(QtWidgets.QMainWindow):
             "l": self.l,
             "h": self.h
         }
-
-        self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
 
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
         self.ui.m_rows_in.editingFinished.connect(self.update_bin_edges_table)
