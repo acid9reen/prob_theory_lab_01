@@ -3,13 +3,14 @@ import sys
 from dataclasses import dataclass
 from typing import Any
 
-from scipy import stats
+from scipy import stats, integrate
 import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
+from hypothesis_dialogue import Ui_Dialog
 
 
 @vectorize([float64(float64, float64, float64)])
@@ -42,6 +43,87 @@ class NumChars:
     sample_range: float
 
 
+class Dialogue(QtWidgets.QDialog):
+    def __init__(self, sample_data: np.ndarray, params: dict) -> None:
+        super(Dialogue, self).__init__()
+        self.ui = Ui_Dialog()
+        self.ui.setupUi(self)
+
+        self.alpha = float(self.ui.alpha_in.text())
+        self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
+        self.sample_data = sample_data
+        self.args = (params["a"], params["loc"], params["scale"])
+        self.intervals: np.ndarray
+        self.q_is: np.ndarray
+
+        self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
+        self.ui.num_of_points_of_interval_in.editingFinished.connect(self.fill_intervals)
+
+    def check_hypothesis(self):
+        self.alpha = float(self.ui.alpha_in.text())
+        self.intervals = self.get_intervals()
+        self.calculate_q_i_and_fill_table()
+
+        # r_0 = self.calculate_r_0()
+        __, f_r_0 = stats.chisquare(self.q_is)
+
+        self.ui.f_r_0_lbl.setText(f"{f_r_0:.4f}")
+
+        if f_r_0 < self.alpha:
+            self.ui.hipothesis_verdict_lbl.setText("Принята ✔")
+        else:
+            self.ui.hipothesis_verdict_lbl.setText("Отвергнута ❌")
+
+    def calculate_r_0(self) -> float:
+        n_is, __ = np.histogram(self.sample_data, self.intervals)
+        n = len(self.intervals)
+
+        r_0 = 0
+        for n_i, q_i in zip(n_is, self.q_is):
+            r_0 += ((n_i - n_i * q_i) * (n_i - n_i * q_i)) / (n * q_i)
+
+        return r_0
+
+    def calculate_q_i_and_fill_table(self) -> None:
+        self.q_is = np.zeros(len(self.intervals) - 1)
+
+        while self.ui.q_out_table.columnCount() > 0:
+            self.ui.q_out_table.removeColumn(0)
+
+        for i in range(1, len(self.intervals)):
+            q_i, __ = integrate.quad(stats.gamma.pdf, self.intervals[i - 1], self.intervals[i], args=self.args)
+
+            self.q_is[i - 1] = q_i
+
+            self.ui.q_out_table.insertColumn(i - 1)
+            self.ui.q_out_table.setItem(0, i - 1, QtWidgets.QTableWidgetItem(f"{q_i:.4f}"))
+
+    def fill_intervals(self) -> None:
+        self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
+
+        first = self.sample_data[0]
+        last = self.sample_data[-1]
+        step = (last - first) / (self.num_of_points_of_interval - 1)
+
+        while self.ui.intervals_table.rowCount() > 0:
+            self.ui.intervals_table.removeRow(0)
+
+        elem = first
+        for row_ind in range(0, self.num_of_points_of_interval):
+            self.ui.intervals_table.insertRow(row_ind)
+            self.ui.intervals_table.setItem(row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}"))
+            elem += step
+
+        self.intervals = self.get_intervals()
+
+    def get_intervals(self) -> np.ndarray:
+        intervals = np.zeros(self.num_of_points_of_interval, dtype=np.float64)
+
+        for i in range(self.num_of_points_of_interval):
+            intervals[i] = float(self.ui.intervals_table.item(i, 0).text())
+
+        return intervals
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self) -> None:
         super(MainWindow, self).__init__()
@@ -59,18 +141,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.h = self.q - np.sqrt(self.r)
         self.l = 1 / np.sqrt(self.r)
 
+        self.params: dict
+
         self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
 
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
         self.ui.m_rows_in.editingFinished.connect(self.update_bin_edges_table)
         self.ui.plot_btn.clicked.connect(self.plot_hist)
+        self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
+
+    def check_hypothesis(self):
+        dlg = Dialogue(self.sample_data, self.params)
+        dlg.exec()
 
     def update_bin_edges_table(self) -> None:
         self.m_rows = int(self.ui.m_rows_in.text())
 
         first = self.sample_data[0]
         last = self.sample_data[-1]
-        step = (last - first) / self.m_rows
+        step = (last - first) / (self.m_rows - 1)
 
         while self.ui.bin_edges_table.rowCount() > 0:
             self.ui.bin_edges_table.removeRow(0)
@@ -115,8 +204,9 @@ class MainWindow(QtWidgets.QMainWindow):
             stats.gamma.ppf(0.01, **params), stats.gamma.ppf(0.99, **params), 100
         )
         self.ui.plot.canvas.axes[0].plot(x, stats.gamma.cdf(x, **params))
-
         self.ui.plot.canvas.draw()
+
+        self.params = params
 
         self.fill_untitled_table(bin_edges, params)
 
