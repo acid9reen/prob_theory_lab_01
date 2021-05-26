@@ -1,4 +1,3 @@
-import os
 import sys
 from dataclasses import dataclass
 from typing import Any
@@ -6,7 +5,6 @@ from typing import Any
 from scipy import stats, integrate
 import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
