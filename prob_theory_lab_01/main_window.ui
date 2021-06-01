@@ -352,6 +352,16 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <row>
+       <property name="text">
+        <string>stat_pdf</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>th_pdf</string>
+       </property>
+      </row>
      </widget>
     </item>
     <item row="1" column="1">

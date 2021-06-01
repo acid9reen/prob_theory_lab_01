@@ -245,14 +245,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.d_out_lbl.setText(f"{d:.4f}")
 
     def fill_untitled_table(self, bin_edges: np.ndarray, params: dict) -> None:
-        while self.ui.untitled_table.rowCount() > 0:
-            self.ui.untitled_table.removeRow(0)
-
         while self.ui.untitled_table.columnCount() > 0:
             self.ui.untitled_table.removeColumn(0)
 
-        self.ui.untitled_table.insertRow(0)
-        self.ui.untitled_table.insertRow(1)
 
         hist, bins = np.histogram(self.sample_data, bins=bin_edges)
         hist = hist / self.num_of_observ
