@@ -1,12 +1,10 @@
-import os
 import sys
 from dataclasses import dataclass
 from typing import Any
 
-from scipy import stats, integrate
+from scipy import stats
 import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtWidgets
 
 from main_window import Ui_main_window
@@ -44,27 +42,30 @@ class NumChars:
 
 
 class Dialogue(QtWidgets.QDialog):
-    def __init__(self, sample_data: np.ndarray, params: dict, initial_conditions: dict) -> None:
+    def __init__(
+        self, sample_data: np.ndarray, params: dict, initial_conditions: dict
+    ) -> None:
         super(Dialogue, self).__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
         self.alpha = float(self.ui.alpha_in.text())
-        self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
+        self.num_of_points_of_interval = int(
+            self.ui.num_of_points_of_interval_in.text()
+        )
         self.sample_data = sample_data
-        self.args = (params["a"], params["loc"], params["scale"])
+        self.params = params
         self.initial_conditions = initial_conditions
         self.intervals: np.ndarray
         self.q_is: np.ndarray
 
         self.ui.check_hypothesis_btn.clicked.connect(self.check_hypothesis)
-        self.ui.num_of_points_of_interval_in.editingFinished.connect(self.fill_intervals)
+        self.ui.num_of_points_of_interval_in.editingFinished.connect(
+            self.fill_intervals
+        )
 
     def calculate_f_0(self, r_0: float, k: int):
-        # integral, __ = integrate.quad(stats.chi2.pdf, 0, r_0, args=k)
-        integral = stats.chi2.cdf(r_0, k)
-
-        return 1 - integral
+        return 1 - stats.chi2.cdf(r_0, k)
 
     def check_hypothesis(self):
         self.alpha = float(self.ui.alpha_in.text())
@@ -73,19 +74,18 @@ class Dialogue(QtWidgets.QDialog):
 
         r_0 = self.calculate_r_0()
         print(r_0)
-        #__, f_r_0 = stats.chisquare(self.q_is) # Alternate chi square test
-        f_r_0 = self.calculate_f_0(r_0, len(self.intervals) - 1)
+        f_r_0 = self.calculate_f_0(r_0, len(self.intervals) - 2)
 
         self.ui.f_r_0_lbl.setText(f"{f_r_0:.4f}")
 
-        if f_r_0 < self.alpha:
+        if f_r_0 >= self.alpha:
             self.ui.hipothesis_verdict_lbl.setText("Принята ✔")
         else:
             self.ui.hipothesis_verdict_lbl.setText("Отвергнута ❌")
 
     def calculate_r_0(self) -> float:
         n_is, __ = np.histogram(self.sample_data, self.intervals)
-        n = self.initial_conditions["n"]
+        n = self.initial_conditions["num_of_observ"]
 
         r_0 = 0
         for n_i, q_i in zip(n_is, self.q_is):
@@ -100,15 +100,21 @@ class Dialogue(QtWidgets.QDialog):
             self.ui.q_out_table.removeColumn(0)
 
         for i in range(1, len(self.intervals)):
-            q_i, __ = integrate.quad(stats.gamma.pdf, self.intervals[i - 1], self.intervals[i], args=self.args)
+            q_i = stats.gamma.cdf(self.intervals[i], **self.params) - stats.gamma.cdf(
+                self.intervals[i - 1], **self.params
+            )
 
             self.q_is[i - 1] = q_i
 
             self.ui.q_out_table.insertColumn(i - 1)
-            self.ui.q_out_table.setItem(0, i - 1, QtWidgets.QTableWidgetItem(f"{q_i:.4f}"))
+            self.ui.q_out_table.setItem(
+                0, i - 1, QtWidgets.QTableWidgetItem(f"{q_i:.4f}")
+            )
 
     def fill_intervals(self) -> None:
-        self.num_of_points_of_interval = int(self.ui.num_of_points_of_interval_in.text())
+        self.num_of_points_of_interval = int(
+            self.ui.num_of_points_of_interval_in.text()
+        )
 
         first = self.sample_data[0]
         last = self.sample_data[-1]
@@ -120,7 +126,9 @@ class Dialogue(QtWidgets.QDialog):
         elem = first
         for row_ind in range(0, self.num_of_points_of_interval):
             self.ui.intervals_table.insertRow(row_ind)
-            self.ui.intervals_table.setItem(row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}"))
+            self.ui.intervals_table.setItem(
+                row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}")
+            )
             elem += step
 
         self.intervals = self.get_intervals()
@@ -133,10 +141,10 @@ class Dialogue(QtWidgets.QDialog):
 
         return intervals
 
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self) -> None:
         super(MainWindow, self).__init__()
-        script_dir = os.path.dirname(os.path.realpath(__file__))
 
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
@@ -155,10 +163,8 @@ class MainWindow(QtWidgets.QMainWindow):
             "n": self.n,
             "num_of_observ": self.num_of_observ,
             "l": self.l,
-            "h": self.h
+            "h": self.h,
         }
-
-        self.addToolBar(NavigationToolbar(self.ui.plot.canvas, self))
 
         self.ui.calc_btn.clicked.connect(self.calc_btn_on_click)
         self.ui.m_rows_in.editingFinished.connect(self.update_bin_edges_table)
@@ -182,7 +188,9 @@ class MainWindow(QtWidgets.QMainWindow):
         elem = first
         for row_ind in range(0, self.m_rows):
             self.ui.bin_edges_table.insertRow(row_ind)
-            self.ui.bin_edges_table.setItem(row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}"))
+            self.ui.bin_edges_table.setItem(
+                row_ind, 0, QtWidgets.QTableWidgetItem(f"{elem:.2f}")
+            )
             elem += step
 
     def get_bin_edges(self) -> np.ndarray:
@@ -197,7 +205,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.plot.canvas.axes[1].clear()
         bin_edges = self.get_bin_edges()
 
-        self.ui.plot.canvas.axes[1].hist(self.sample_data, bin_edges)
+        self.ui.plot.canvas.axes[1].hist(self.sample_data, bin_edges, density=True)
 
         self.ui.plot.canvas.axes[0].clear()
         self.ui.plot.canvas.axes[0].hist(
@@ -225,15 +233,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.fill_untitled_table(bin_edges, params)
 
-    def fill_untitled_table(self, bin_edges: np.ndarray, params:dict) -> None:
-        while self.ui.untitled_table.rowCount() > 0:
-            self.ui.untitled_table.removeRow(0)
+        d = 0
+        for i in range(len(self.sample_data)):
+            d_curr = max(
+                (i + 1) / self.num_of_observ - stats.gamma.cdf(self.sample_data[i], **params),
+                stats.gamma.cdf(self.sample_data[i], **params) - i / self.num_of_observ)
 
+            if d_curr > d:
+                d = d_curr
+
+        self.ui.d_out_lbl.setText(f"{d:.4f}")
+
+    def fill_untitled_table(self, bin_edges: np.ndarray, params: dict) -> None:
         while self.ui.untitled_table.columnCount() > 0:
             self.ui.untitled_table.removeColumn(0)
 
-        self.ui.untitled_table.insertRow(0)
-        self.ui.untitled_table.insertRow(1)
 
         hist, bins = np.histogram(self.sample_data, bins=bin_edges)
         hist = hist / self.num_of_observ
@@ -242,11 +256,15 @@ class MainWindow(QtWidgets.QMainWindow):
         for index, val in enumerate(hist):
             self.ui.untitled_table.insertColumn(index)
             stat_pdf = val / (bins[index + 1] - bins[index])
-            self.ui.untitled_table.setItem(0, index, QtWidgets.QTableWidgetItem(f"{stat_pdf:.4f}"))
+            self.ui.untitled_table.setItem(
+                0, index, QtWidgets.QTableWidgetItem(f"{stat_pdf:.4f}")
+            )
 
             x = bins[index] + (bins[index + 1] - bins[index]) / 2
             th_pdf = stats.gamma.pdf(x, **params)
-            self.ui.untitled_table.setItem(1, index, QtWidgets.QTableWidgetItem(f"{th_pdf:.4f}"))
+            self.ui.untitled_table.setItem(
+                1, index, QtWidgets.QTableWidgetItem(f"{th_pdf:.4f}")
+            )
 
             sub = abs(stat_pdf - th_pdf)
 
@@ -317,7 +335,7 @@ class MainWindow(QtWidgets.QMainWindow):
             "n": self.n,
             "num_of_observ": self.num_of_observ,
             "l": self.l,
-            "h": self.h
+            "h": self.h,
         }
 
         self.h = self.q - self.r
