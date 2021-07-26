@@ -6,7 +6,7 @@ python := python3
 default: help
 
 help:
-	@echo "This is help menu:"
+	@echo "This is the help menu:"
 	@echo "	make ui - to update ui files"
 	@echo "	make venv - to create venv"
 	@echo "	make requirements - to install/update requirements"
