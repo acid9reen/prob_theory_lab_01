@@ -13,5 +13,7 @@ class MplWidget(QtWidgets.QWidget):
         vertical_layout = QtWidgets.QVBoxLayout()
         vertical_layout.addWidget(self.canvas)
 
-        self.canvas.axes = self.canvas.figure.add_subplot(121), self.canvas.figure.add_subplot(122)
+        self.canvas.axes = self.canvas.figure.add_subplot(
+            121
+        ), self.canvas.figure.add_subplot(122)
         self.setLayout(vertical_layout)

@@ -97,7 +97,9 @@ class Ui_Dialog(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridLayout.addItem(spacerItem, 1, 2, 1, 1)
         self.q_out_table = QtWidgets.QTableWidget(self.groupBox_2)
         font = QtGui.QFont()
@@ -133,6 +135,11 @@ class Ui_Dialog(object):
         self.alpha_in.setText(_translate("Dialog", "0.5"))
         self.check_hypothesis_btn.setText(_translate("Dialog", "Проверить гипотезу"))
         self.groupBox_2.setTitle(_translate("Dialog", "Результаты"))
-        self.label_3.setText(_translate("Dialog", "<html><head/><body><p>Ḟ(R<span style=\" vertical-align:sub;\">0</span>) =</p></body></html>"))
+        self.label_3.setText(
+            _translate(
+                "Dialog",
+                '<html><head/><body><p>Ḟ(R<span style=" vertical-align:sub;">0</span>) =</p></body></html>',
+            )
+        )
         item = self.q_out_table.verticalHeaderItem(0)
         item.setText(_translate("Dialog", "q_i"))

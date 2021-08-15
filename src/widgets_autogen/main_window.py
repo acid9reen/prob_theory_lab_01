@@ -237,7 +237,9 @@ class Ui_main_window(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
@@ -308,7 +310,9 @@ class Ui_main_window(object):
 
     def retranslateUi(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        main_window.setWindowTitle(_translate("main_window", "Лабораторная работа по теории вероятностей"))
+        main_window.setWindowTitle(
+            _translate("main_window", "Лабораторная работа по теории вероятностей")
+        )
         self.groupBox_2.setTitle(_translate("main_window", "Параметры задачи"))
         self.num_of_observ_in.setText(_translate("main_window", "100"))
         self.calc_btn.setText(_translate("main_window", "PushButton"))
@@ -360,10 +364,27 @@ class Ui_main_window(object):
         item = self.num_chars_table.horizontalHeaderItem(7)
         item.setText(_translate("main_window", "🆁"))
         self.groupBox.setTitle(_translate("main_window", "Условие задачи"))
-        self.label.setText(_translate("main_window", "<html><head/><body><p>Устройство состоит из <span style=\" font-style:italic;\">N</span> &gt;&gt; 1 дублирующих приборов. Каждый следующий прибор включается после выхода из строя предыдущего. Время безотказной работы каждого прибора - положительная с.в. со средним <span style=\" font-style:italic;\">Q </span>и дисперсией <span style=\" font-style:italic;\">R. </span>Плотность распределения выбрать по аналогии с приведенными на рисунках на с. 15. С.в. <span style=\" font-style:italic;\">η - </span>время безотказной работы всего устройтва.</p></body></html>"))
+        self.label.setText(
+            _translate(
+                "main_window",
+                '<html><head/><body><p>Устройство состоит из <span style=" font-style:italic;">N</span> &gt;&gt; 1 дублирующих приборов. Каждый следующий прибор включается после выхода из строя предыдущего. Время безотказной работы каждого прибора - положительная с.в. со средним <span style=" font-style:italic;">Q </span>и дисперсией <span style=" font-style:italic;">R. </span>Плотность распределения выбрать по аналогии с приведенными на рисунках на с. 15. С.в. <span style=" font-style:italic;">η - </span>время безотказной работы всего устройтва.</p></body></html>',
+            )
+        )
         item = self.table.horizontalHeaderItem(0)
         item.setText(_translate("main_window", "Время работы"))
-        self.label_6.setText(_translate("main_window", "<html><head/><body><p>max|stat_pdf - th_pdf| ↓</p></body></html>"))
-        self.label_7.setText(_translate("main_window", "<html><head/><body><p><span style=\" font-size:10pt;\">D ↓</span></p></body></html>"))
+        self.label_6.setText(
+            _translate(
+                "main_window",
+                "<html><head/><body><p>max|stat_pdf - th_pdf| ↓</p></body></html>",
+            )
+        )
+        self.label_7.setText(
+            _translate(
+                "main_window",
+                '<html><head/><body><p><span style=" font-size:10pt;">D ↓</span></p></body></html>',
+            )
+        )
         self.check_hypothesis_btn.setText(_translate("main_window", "Гипотеза"))
+
+
 from mpl_widget import MplWidget

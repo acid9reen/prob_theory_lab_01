@@ -1,13 +1,13 @@
-ui_dir := ./prob_theory_lab_01/ui
+ui_dir := ./ui
 venv_dir := ./.venv
-requirements := ./requirements.txt
+requirements := ./requirements/dev.txt
 python := python3
 
 default: help
 
 help:
 	@echo "This is the help menu:"
-	@echo "	make ui - to update ui files"
+	@echo "	make gui - to update ui files"
 	@echo "	make venv - to create venv"
 	@echo "	make requirements - to install/update requirements"
 	@echo "	make setup - to create venv and install requirements"
@@ -21,7 +21,7 @@ requirements: $(requirements)
 	. $(venv_dir)/bin/activate
 	pip install -r $^
 
-ui: $(ui_dir)
+gui: $(ui_dir)
 	$(MAKE) --directory=$^
 
 clean:

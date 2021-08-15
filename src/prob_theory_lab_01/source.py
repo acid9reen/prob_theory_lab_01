@@ -7,8 +7,8 @@ import numpy as np
 from numba import njit, vectorize, float64, int32  # type: ignore
 from PyQt5 import QtWidgets
 
-from ui.main_window import Ui_main_window
-from ui.hypothesis_dialogue import Ui_Dialog
+from widgets_autogen.main_window import Ui_main_window
+from widgets_autogen.hypothesis_dialogue import Ui_Dialog
 
 
 @vectorize([float64(float64, float64, float64)])
@@ -236,8 +236,10 @@ class MainWindow(QtWidgets.QMainWindow):
         d = 0
         for i in range(len(self.sample_data)):
             d_curr = max(
-                (i + 1) / self.num_of_observ - stats.gamma.cdf(self.sample_data[i], **params),
-                stats.gamma.cdf(self.sample_data[i], **params) - i / self.num_of_observ)
+                (i + 1) / self.num_of_observ
+                - stats.gamma.cdf(self.sample_data[i], **params),
+                stats.gamma.cdf(self.sample_data[i], **params) - i / self.num_of_observ,
+            )
 
             if d_curr > d:
                 d = d_curr
@@ -247,7 +249,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def fill_untitled_table(self, bin_edges: np.ndarray, params: dict) -> None:
         while self.ui.untitled_table.columnCount() > 0:
             self.ui.untitled_table.removeColumn(0)
-
 
         hist, bins = np.histogram(self.sample_data, bins=bin_edges)
         hist = hist / self.num_of_observ
